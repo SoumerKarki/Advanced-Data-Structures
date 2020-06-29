@@ -31,6 +31,23 @@ class Graph:
                     edges.append({neighbour,vertex})
         return edges
 
+    def find_path(self,start_vertex,end_vertex,path=None):
+        if path==None:
+            path=[]
+        graph=self.__graph_dict
+        path=path+[start_vertex]
+        if start_vertex==end_vertex:
+            return path
+        if start_vertex not in graph:
+            return None
+        for vertex in graph[start_vertex]:
+            if vertex not in path:
+                extended_path=self.find_path(vertex,end_vertex,path)
+                if extended_path:
+                    return extended_path
+        return None
+
+
 
 def main():
     g={'a':['d'],'b':['c'],'c':['b','c','d','e'],'d':['a','c'],'e':['c'],'f':[]}
@@ -55,6 +72,13 @@ def main():
     print(graph.vertices())
     print("Edges of graph: ")
     print(graph.edges())
+    print("PATH from vertex 'a' to vertex 'b': ")
+    print(graph.find_path('a','b'))
+    print("PATH from vertex 'a' to vertex 'f': ")
+    print(graph.find_path('a','f'))
+    print("PATH from vertex 'c' to vertex 'c': ")
+    print(graph.find_path('c','c'))
+
 
 
 main()
